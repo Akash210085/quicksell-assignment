@@ -80,3 +80,26 @@ const getPriorityLabel = (priority) => {
       return "NA";
   }
 };
+
+const orderByPriority = (tickets) =>
+  tickets.sort((ticketA, ticketB) =>
+    ticketA.priority > ticketB.priority ? -1 : 1
+  );
+
+const orderByTitle = (tickets) =>
+  tickets.sort((ticketA, ticketB) => (ticketA.title < ticketB.title ? -1 : 1));
+
+export const loadGrid = (tickets, grouping, ordering) => {
+  const orderedTickets =
+    ordering === "priority" ? orderByPriority(tickets) : orderByTitle(tickets);
+
+  switch (grouping) {
+    case "status":
+      return groupTicketsByStatus(orderedTickets);
+    case "priority":
+      return groupTicketsByPriority(orderedTickets);
+    case "user":
+    default:
+      return groupTicketsByUserId(orderedTickets);
+  }
+};

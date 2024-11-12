@@ -3,9 +3,18 @@ import "./dropdown.css";
 import { LuSettings2 } from "react-icons/lu";
 import { BiChevronDown } from "react-icons/bi";
 
-function Dropdown() {
+function Dropdown({ grouping, setGrouping, ordering, setOrdering }) {
   const [visible, setVisible] = useState(false);
   const dropdownRef = useRef(null);
+
+  const onGroupingChange = useCallback(
+    (e) => setGrouping(e.target.value),
+    [setGrouping]
+  );
+  const onOrderingChange = useCallback(
+    (e) => setOrdering(e.target.value),
+    [setOrdering]
+  );
 
   const showDropdown = useCallback(() => {
     setVisible(true);
@@ -35,7 +44,12 @@ function Dropdown() {
       <div className={`dropdown-content-container ${visible && "visible"}`}>
         <div className="dropdown-content-row">
           <div className="dropdown-content-label">Grouping</div>
-          <select name="grouping" id="grouping">
+          <select
+            name="grouping"
+            id="grouping"
+            value={grouping}
+            onChange={onGroupingChange}
+          >
             <option value="status">Status</option>
             <option value="user">User</option>
             <option value="priority">Priority</option>
@@ -43,7 +57,12 @@ function Dropdown() {
         </div>
         <div className="dropdown-content-row">
           <div className="dropdown-content-label">Ordering</div>
-          <select name="grouping" id="grouping">
+          <select
+            name="ordering"
+            id="ordering"
+            value={ordering}
+            onChange={onOrderingChange}
+          >
             <option value="priority">Priority</option>
             <option value="title">Title</option>
           </select>
