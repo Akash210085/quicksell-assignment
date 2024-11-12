@@ -11,7 +11,21 @@ function App() {
   const [grouping, setGrouping] = useState("status");
   const [ordering, setOrdering] = useState("priority");
   const [loading, setLoading] = useState(true);
+
+  const loadSettings = useCallback(() => {
+    const savedGrouping = localStorage.getItem("grouping");
+    const savedOrdering = localStorage.getItem("ordering");
+
+    if (savedGrouping) setGrouping(savedGrouping);
+    if (savedOrdering) setOrdering(savedOrdering);
+  }, []);
+
+  const saveSettings = useCallback((data) => {
+    for (let key in data) localStorage.setItem(key, data[key]);
+  }, []);
+
   useEffect(() => {
+    loadSettings();
     fetch(API_URL)
       .then((resp) => resp.json())
       .then((res) => {
@@ -20,22 +34,31 @@ function App() {
         setUserData(mapUsersByUserId(users));
       })
       .catch((err) => {});
-  }, []);
+  }, [loadSettings]);
 
   useEffect(() => {
+    if (!tickets.length) return;
     setGridData(loadGrid(tickets, grouping, ordering));
     setLoading(false);
   }, [grouping, ordering, tickets]);
 
-  const onSetGrouping = useCallback((value) => {
-    setLoading(true);
-    setGrouping(value);
-  }, []);
+  const onSetGrouping = useCallback(
+    (value) => {
+      setLoading(true);
+      setGrouping(value);
+      saveSettings({ grouping: value });
+    },
+    [saveSettings]
+  );
 
-  const onSetOrdering = useCallback((value) => {
-    setLoading(true);
-    setOrdering(value);
-  }, []);
+  const onSetOrdering = useCallback(
+    (value) => {
+      setLoading(true);
+      setOrdering(value);
+      saveSettings({ ordering: value });
+    },
+    [saveSettings]
+  );
 
   return (
     <div className="App">
