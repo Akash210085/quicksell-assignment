@@ -1,11 +1,11 @@
 import React from "react";
 import "./header.css";
-import DisplayDropdown from "../Dropdown";
+import Dropdown from "../Dropdown";
 
 function Header() {
   return (
     <header>
-      <DisplayDropdown />
+      <Dropdown />
     </header>
   );
 }

@@ -1,18 +1,23 @@
-import React from 'react';
-import './grid.css'
-import Column from '../Column/Column';
+import React, { useMemo } from "react";
+import "./grid.css";
+import Column from "../Column/Column";
 
-function Grid() {
+function Grid({ gridData, grouping, userIdToData }) {
+  const columnKeys = useMemo(() => Object.keys(gridData), [gridData]);
 
-    return (
-        <div className='grid'>
-            <Column />
-            <Column />
-            <Column />
-            <Column />
-            <Column />
-        </div>
-    );
+  return (
+    <div className="grid">
+      {columnKeys.map((key) => (
+        <Column
+          key={key}
+          tickets={gridData[key]}
+          grouping={grouping}
+          groupBy={key}
+          userIdToData={userIdToData}
+        />
+      ))}
+    </div>
+  );
 }
 
 export default Grid;

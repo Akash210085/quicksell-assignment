@@ -1,33 +1,33 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import "./displayDropdown.css";
+import "./dropdown.css";
 import { LuSettings2 } from "react-icons/lu";
 import { BiChevronDown } from "react-icons/bi";
 
-function DisplayDropdown() {
+function Dropdown() {
   const [visible, setVisible] = useState(false);
-  const componentRef = useRef(null);
+  const dropdownRef = useRef(null);
 
-  const openDropdown = useCallback(() => {
+  const showDropdown = useCallback(() => {
     setVisible(true);
   }, []);
 
-  const handleClickOutside = useCallback((event) => {
-    if (componentRef.current && !componentRef.current.contains(event.target)) {
+  const closeDropdownOnOutsideClick = useCallback((event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setVisible(false);
     }
   }, []);
 
   useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
+    document.addEventListener("click", closeDropdownOnOutsideClick);
 
     return () => {
-      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("click", closeDropdownOnOutsideClick);
     };
   });
 
   return (
-    <div className="display-dropdown" ref={componentRef}>
-      <div className="dropdown-label-container" onClick={openDropdown}>
+    <div className="dropdown" ref={dropdownRef}>
+      <div className="dropdown-label-container" onClick={showDropdown}>
         <LuSettings2 color="#6b6f76" />
         <div className="dropdown-label">Display</div>
         <BiChevronDown color="#6b6f76" />
@@ -53,4 +53,4 @@ function DisplayDropdown() {
   );
 }
 
-export default DisplayDropdown;
+export default Dropdown;
